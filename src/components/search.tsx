@@ -1,9 +1,9 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import SearchIcon from '../icons/search'
 
-export default function Search ({
+export default function Search({
   className,
-  placeholder
+  placeholder,
 }: {
   className: string
   placeholder: string
