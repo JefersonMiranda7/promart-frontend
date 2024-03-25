@@ -15,11 +15,14 @@ const initialData: IClient = {
   email: '',
   birthdate: '',
   age: '',
-  active: true
+  active: true,
 }
 
-export default function ClientModal ({
-  isAddEditModalOpen, isEditMode, selectedClient, closeModal
+export default function ClientModal({
+  isAddEditModalOpen,
+  isEditMode,
+  selectedClient,
+  closeModal,
 }: {
   isAddEditModalOpen: boolean
   isEditMode: boolean
@@ -28,33 +31,43 @@ export default function ClientModal ({
 }) {
   const [confirmLoading, setConfirmLoading] = useState(false)
   const { register, handleSubmit, reset } = useForm<IClient>({
-    defaultValues: isEditMode ? selectedClient : initialData
+    defaultValues: isEditMode ? selectedClient : initialData,
   })
-  
+
   const handleOk = async (data: IClient) => {
     setConfirmLoading(true)
 
     setTimeout(async () => {
       if (isEditMode) {
-        await axios.put(`${REACT_APP_SERVER_URL}clients/${selectedClient?.id}`, data)
-        .then (response => {
-          console.log(response.data)
-          message.success(<span className='text-sm'>Editado correctamente</span>)
-        })
-        .catch (error => {
-          console.log(error)
-          message.error(<span className='text-sm'>Ha surgido un error al editar</span>)
-        })
+        await axios
+          .put(`${REACT_APP_SERVER_URL}clients/${selectedClient?.id}`, data)
+          .then((response) => {
+            console.log(response.data)
+            message.success(
+              <span className='text-sm'>Editado correctamente</span>
+            )
+          })
+          .catch((error) => {
+            console.log(error)
+            message.error(
+              <span className='text-sm'>Ha surgido un error al editar</span>
+            )
+          })
       } else {
-        await axios.post(`${REACT_APP_SERVER_URL}clients`, data)
-        .then (response => {
-          console.log(response.data)
-          message.success(<span className='text-sm'>Agregado correctamente</span>)
-        })
-        .catch (error => {
-          console.log(error)
-          message.error(<span className='text-sm'>Ha surgido un error al agregar</span>)
-        })
+        await axios
+          .post(`${REACT_APP_SERVER_URL}clients`, data)
+          .then((response) => {
+            console.log(response.data)
+            message.success(
+              <span className='text-sm'>Agregado correctamente</span>
+            )
+          })
+          .catch((error) => {
+            console.log(error)
+            message.error(
+              <span className='text-sm'>Ha surgido un error al agregar</span>
+            )
+          })
       }
       setConfirmLoading(false)
       reset()
@@ -76,51 +89,71 @@ export default function ClientModal ({
       centered
       footer={null}
     >
-      <form
-        onSubmit={handleSubmit((data) => handleOk(data))}
-      >
+      <form onSubmit={handleSubmit((data) => handleOk(data))}>
         <div className='flex text-sm mt-5'>
           <div className='flex w-full flex-col px-32'>
             <span className='text-myGreen'>Nombre</span>
-            <input {...register('name')} className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'/>
+            <input
+              {...register('name')}
+              className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'
+            />
 
             <span className='text-myGreen'>Apellido Paterno</span>
-            <input {...register('surname')} className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'/>
+            <input
+              {...register('surname')}
+              className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'
+            />
 
             <span className='text-myGreen'>Apellido Materno (opcional)</span>
-            <input {...register('mothers_surname')} className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'/>
-            
+            <input
+              {...register('mothers_surname')}
+              className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'
+            />
+
             <span className='text-myGreen'>Correo Electrónico</span>
-            <input {...register('email')} className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'/>
+            <input
+              {...register('email')}
+              className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'
+            />
 
             <span className='text-myGreen'>Fecha de Nacimiento</span>
-            <input {...register('birthdate'/*, { valueAsDate: true }*/)} type='date' className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'/>
+            <input
+              {...register('birthdate' /*, { valueAsDate: true }*/)}
+              type='date'
+              className='px-3 py-1 mb-2 border rounded-md bg-gray-50 text-gray-700'
+            />
 
             <span className='text-myGreen'>Edad</span>
-            <input {...register('age')} className='px-3 py-1 mb-2 border rounded-md bg-gray-200 text-gray-700' readOnly/>
+            <input
+              {...register('age')}
+              className='px-3 py-1 mb-2 border rounded-md bg-gray-200 text-gray-700'
+              readOnly
+            />
           </div>
         </div>
         <div className='flex justify-between text-base mt-5'>
-          <button key='cancel'
+          <button
+            key='cancel'
             type='button'
             className='rounded-md px-5 py-1 border text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:ring-2 focus:ring-white'
             onClick={handleCancel}
           >
             Cancelar
           </button>
-          <button key='save'
+          <button
+            key='save'
             type='submit'
             className='flex rounded-md items-center px-3 py-1 text-myOrange bg-myYellow hover:bg-myOrangeBg hover:text-white focus:ring-2 focus:ring-white'
           >
-            { confirmLoading ?
+            {confirmLoading ? (
               <div className='animate-spin mr-2'>
                 <LoaderIcon width={20} height={20} />
               </div>
-              :
+            ) : (
               <div className='mr-2'>
                 <SaveIcon width={20} height={20} />
               </div>
-            }
+            )}
             <span>Confirmar</span>
           </button>
         </div>

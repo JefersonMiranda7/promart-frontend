@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 
-const poppins = Poppins({ 
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
-  display: 'swap'
- })
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'MyClients App',
@@ -25,9 +25,7 @@ export default function RootLayout({
         <meta name='robots' content='index, follow' />
       </head>
       <body className={poppins.className}>
-        <main className='p-32'>
-          {children}
-        </main>
+        <main className='p-32'>{children}</main>
       </body>
     </html>
   )

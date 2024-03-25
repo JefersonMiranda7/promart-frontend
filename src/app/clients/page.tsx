@@ -1,6 +1,5 @@
 'use client'
 
-import Actions from '../../components/actions'
 import Search from '../../components/search'
 import DataTable from '../../components/dataTable'
 import ClientModal from './modal'
@@ -14,24 +13,12 @@ import { message } from 'antd'
 import PlusIcon from '@/icons/plus'
 
 const columns = [
-  { key: 'name',
-    label: 'Nombre'
-  },
-  { key: 'surname',
-    label: 'Apellido Paterno'
-  },
-  { key: 'mothers_surname',
-    label: 'Apellido Materno'
-  },
-  { key: 'email',
-    label: 'Correo Electrónico'
-  },
-  { key: 'birthdate',
-    label: 'Fecha de Nacimiento'
-  },
-  { key: 'age',
-    label: 'Edad'
-  }
+  { key: 'name', label: 'Nombre' },
+  { key: 'surname', label: 'Apellido Paterno' },
+  { key: 'mothers_surname', label: 'Apellido Materno' },
+  { key: 'email', label: 'Correo Electrónico' },
+  { key: 'birthdate', label: 'Fecha de Nacimiento' },
+  { key: 'age', label: 'Edad' },
 ]
 
 export default function PeoplePage() {
@@ -50,25 +37,30 @@ export default function PeoplePage() {
     email: '',
     birthdate: '',
     age: '',
-    active: true
+    active: true,
   })
   const [selectedPeople, setSelectedPeople] = useState<IClient[]>([])
-  
+
   const getPeople = async () => {
-    await axios.get(`${REACT_APP_SERVER_URL}people${query ? `/${query}` : ''}`)
-    .then (response => {
-      setArrPeople(response.data)
-    })
-    .catch (error => {
-      console.log(error)
-      message.error(<span className='text-sm'>Ha surgido un error al cargar la información</span>)
-    })
+    await axios
+      .get(`${REACT_APP_SERVER_URL}people${query ? `/${query}` : ''}`)
+      .then((response) => {
+        setArrPeople(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        message.error(
+          <span className='text-sm'>
+            Ha surgido un error al cargar la información
+          </span>
+        )
+      })
   }
-  
-  useEffect (() => {
+
+  useEffect(() => {
     getPeople()
   }, [query, isAddEditModalOpen, isDeleteModalOpen])
-  
+
   const showModal = () => {
     setIsAddEditModalOpen(true)
   }
@@ -80,22 +72,27 @@ export default function PeoplePage() {
 
   const onDelete = async () => {
     setConfirmLoading(true)
-    
+
     setTimeout(async () => {
-      await axios.delete(`${REACT_APP_SERVER_URL}clients/${selectedClient.id}`)
-      .then(response => {
-        console.log(response.data)
-        message.success(<span className='text-sm'>Eliminado correctamente</span>)
-      })
-      .catch (error => {
-        console.log(error)
-        message.error(<span className='text-sm'>Ha surgido un error al eliminar</span>)
-      })
+      await axios
+        .delete(`${REACT_APP_SERVER_URL}clients/${selectedClient.id}`)
+        .then((response) => {
+          console.log(response.data)
+          message.success(
+            <span className='text-sm'>Eliminado correctamente</span>
+          )
+        })
+        .catch((error) => {
+          console.log(error)
+          message.error(
+            <span className='text-sm'>Ha surgido un error al eliminar</span>
+          )
+        })
       setConfirmLoading(false)
       setIsDeleteModalOpen(false)
     }, 500)
   }
-  
+
   const showEditModal = (item: IClient) => {
     setIsAddEditModalOpen(true)
     setIsEditMode(true)
@@ -110,7 +107,6 @@ export default function PeoplePage() {
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false)
   }
-
 
   return (
     <div className='flex flex-col rounded-xl bg-myGreenBg'>
@@ -140,16 +136,16 @@ export default function PeoplePage() {
         showDeleteModal={showDeleteModal}
       />
 
-      { isAddEditModalOpen &&
+      {isAddEditModalOpen && (
         <ClientModal
           isAddEditModalOpen={isAddEditModalOpen}
           isEditMode={isEditMode}
           selectedClient={selectedClient}
           closeModal={closeModal}
         />
-      }
-      
-      { isDeleteModalOpen &&
+      )}
+
+      {isDeleteModalOpen && (
         <DeleteModal
           entityName='CLIENTE'
           isDeleteModalOpen={isDeleteModalOpen}
@@ -157,7 +153,7 @@ export default function PeoplePage() {
           onDelete={onDelete}
           closeDeleteModal={closeDeleteModal}
         />
-      }
+      )}
     </div>
   )
 }
