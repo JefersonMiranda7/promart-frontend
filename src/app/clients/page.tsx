@@ -10,7 +10,8 @@ import { IClient } from '../../interfaces/client'
 import { REACT_APP_SERVER_URL } from '../../config'
 import axios from 'axios'
 import { message } from 'antd'
-import PlusIcon from '@/icons/plus'
+import PlusIcon from '../../icons/plus'
+import Carousel from '../../components/carousel'
 
 const columns = [
   { key: 'name', label: 'Nombre' },
@@ -21,10 +22,10 @@ const columns = [
   { key: 'age', label: 'Edad' },
 ]
 
-export default function PeoplePage() {
+export default function ClientsPage() {
   const searchParams = useSearchParams()
   const query = searchParams.get('query')
-  const [arrPeople, setArrPeople] = useState<IClient[]>([])
+  const [arrClients, setArrClients] = useState<IClient[]>([])
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState<boolean>(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
   const [isEditMode, setIsEditMode] = useState<boolean>(false)
@@ -39,13 +40,12 @@ export default function PeoplePage() {
     age: '',
     active: true,
   })
-  const [selectedPeople, setSelectedPeople] = useState<IClient[]>([])
 
-  const getPeople = async () => {
+  const getClients = async () => {
     await axios
-      .get(`${REACT_APP_SERVER_URL}people${query ? `/${query}` : ''}`)
+      .get(`${REACT_APP_SERVER_URL}clients`)
       .then((response) => {
-        setArrPeople(response.data)
+        setArrClients(response.data.data)
       })
       .catch((error) => {
         console.log(error)
@@ -58,7 +58,7 @@ export default function PeoplePage() {
   }
 
   useEffect(() => {
-    getPeople()
+    getClients()
   }, [query, isAddEditModalOpen, isDeleteModalOpen])
 
   const showModal = () => {
@@ -108,9 +108,18 @@ export default function PeoplePage() {
     setIsDeleteModalOpen(false)
   }
 
+  const images: string[] = [
+    '/ronaldinho.webp',
+    '/messi.webp',
+    '/neymar.webp'
+  ]
+
   return (
     <div className='flex flex-col rounded-xl bg-myGreenBg'>
       <span className='flex justify-center text-2xl my-5'>CLIENTES</span>
+
+      <Carousel images={images} />
+
       <div className='flex flex-row justify-between'>
         <Search
           className='flex basis-3/5 m-5'
@@ -131,7 +140,7 @@ export default function PeoplePage() {
       <DataTable
         className={'bg-myLightGreen rounded-xl p-3 m-5'}
         columns={columns}
-        data={arrPeople}
+        data={arrClients}
         showEditModal={showEditModal}
         showDeleteModal={showDeleteModal}
       />
