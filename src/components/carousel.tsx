@@ -12,7 +12,7 @@ export default function Carousel({ images }: { images: string[] }) {
   }, [images.length])
 
   return (
-    <div className='flex justify-centee1r mx-24 my-5 rounded-lg'>
+    <div className='flex justify-center mx-24 my-5 rounded-lg'>
       {images.slice(index, index + 3).map((image, i) => (
         <Image
           key={i}
