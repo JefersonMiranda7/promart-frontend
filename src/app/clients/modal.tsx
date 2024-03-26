@@ -63,6 +63,7 @@ export default function ClientModal({
             )
           })
           .catch((error) => {
+            console.log(data)
             console.log(error)
             message.error(
               <span className='text-sm'>Ha surgido un error al agregar</span>

@@ -25,7 +25,7 @@ export default function RootLayout({
         <meta name='robots' content='index, follow' />
       </head>
       <body className={poppins.className}>
-        <main className='p-32'>{children}</main>
+        <main className='p-24'>{children}</main>
       </body>
     </html>
   )
